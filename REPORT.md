@@ -34,3 +34,17 @@ Purpose: mark milestones (v1.0, v2.0, etc.), and provide documentation of what c
 Attaching binaries (like bin/client) lets users download and run the program without compiling source code themselves.
 
 This is how real-world software is distributed on GitHub.
+## Feature-3: Static Library
+
+**Q1. Compare the Makefile from Part 2 and Part 3. What are the key differences in the variables and rules that enable the creation of a static library?**  
+- In Part 2 the Makefile compiles all `.c` files and links the resulting `.o` files directly into an executable using a rule like `$(TARGET): $(OBJECTS)`.  
+- In Part 3 the build separates the code into a library and the main program: library sources are compiled into `obj/*.o`, then combined into `lib/libmyutils.a` with `ar`. The final executable links against this library with `-Llib -lmyutils`.  
+- Key differences: new variables (`LIB_SRCS`, `LIB_OBJS`, `OBJDIR`, `LIBDIR`), an `ar` + `ranlib` step to create `.a`, and modified linking rules that reference `-lmyutils` instead of listing many object files.
+
+**Q2. What is the purpose of the `ar` command? Why is `ranlib` often used immediately after it?**  
+- `ar` bundles object files into a static archive (`.a`) that the linker can use. The common usage is `ar rcs libname.a obj1.o obj2.o`.  
+- `ranlib` writes an index to the archive (symbol table) so the linker can quickly locate symbols. Many `ar` implementations create the index automatically with `-s`, but running `ranlib` is portable and recommended.
+
+**Q3. When you run `nm` on your `client_static` executable, are the symbols for functions like `mystrlen` present? What does this tell you about how static linking works?**  
+- Yes — `nm` should show symbols like `mystrlen` in the final executable. This indicates that the library object code was copied into the executable at link time. Static linking merges required library object code into the final binary so the executable can run without the `.a` file at runtime.
+
