@@ -1,129 +1,132 @@
-# Operating Systems Assignment – BSDSF22M035  
-**Author:** Aiman Asif  
-**Final Version:** v0.4.1-final  
+# BSDSF22M035–OS–A01  
+### Operating Systems – C Project with Libraries, Builds & Documentation
 
-## 📋 Overview
-This project demonstrates advanced Linux build and packaging techniques as part of an Operating Systems course.  
-It includes:
-- Modular multi-file C programming
-- Static and dynamic library builds
-- Custom manual (man) pages
-- System-wide installation using a Makefile
-- A complete Git workflow with branches, merges, tags, and releases
-
-The final release is fully functional and documented, showing a professional software-development process.
+This assignment demonstrates how to design, build, and document a **C software project** using  
+**Makefiles**, **static and dynamic libraries**, **man pages**, and a professional **Git workflow**.  
+Each development stage introduces a new concept and builds on the previous one.
 
 ---
 
-## ✨ Features Implemented
-1. **Multi-File Build**  
-   - Source code split into multiple `.c` and `.h` files for modularity.  
-   - Compiled using a Makefile to create a single executable.
+## 🧩 Project Milestones
 
-2. **Static Library Build**  
-   - Created `libmyutils.a` and linked it with the client program.  
-   - Produces a standalone executable with all library code embedded.
+### 🟢 Phase 1 – Modular Multi-File Build
+- Application code separated into multiple source and header files.
+- Compiled into a single executable using a Makefile to manage dependencies.
 
-3. **Dynamic Library Build**  
-   - Created `libmyutils.so` shared library.  
-   - The client program dynamically links at runtime, reducing executable size.
+### 🟡 Phase 2 – Static Library (`libmyutils.a`)
+- Utility functions archived into a static library.
+- A client program (`client_static`) links with this `.a` file to produce a fully self-contained binary.
 
-4. **Dynamic Client Build**  
-   - Built a client (`client_dynamic`) that loads the shared library using the runtime linker.  
-   - Supports `LD_LIBRARY_PATH` for non-standard library locations.
+### 🟠 Phase 3 – Dynamic Library (`libmyutils.so`)
+- Code compiled into a shared object (`.so`) using **`-fPIC`** and **`-shared`** flags.
+- A dynamic client (`client_dynamic`) links at runtime, demonstrating memory savings and easy updates.
 
-5. **Man Pages & Installation**  
-   - Custom man pages (`mystrlen`, `wordCount`, `mygrep`) provide user documentation.  
-   - `make install` copies the client to `/usr/local/bin/` and man pages to `/usr/local/share/man/man3/`.  
-   - `make uninstall` removes them cleanly.
+### 🟣 Phase 4 – Installation & Man Pages
+- Created **man pages** for key library functions (`mystrlen`, `wordCount`, `mygrep`).
+- Added **install** and **uninstall** targets to the Makefile to:
+  - Copy executables to `/usr/local/bin`
+  - Copy & compress man pages to `/usr/local/share/man/man3`
+  - Update the system man database (`mandb`).
 
 ---
 
-## 🛠️ Installation
-Clone the repository and install system-wide:
+## ⚙️ Build & Run
+
+Clone the repository and navigate into the project folder.
+
+### Build Everything
 ```bash
+make
+Build Static Client Only
+bash
+Copy code
+make client_static
+Build Dynamic Client Only
+bash
+Copy code
+make client_dynamic
+Clean Object Files and Binaries
+bash
+Copy code
+make clean
+Install System-Wide (requires sudo)
+bash
+Copy code
 sudo make install
-This will:
-
-Install the client executable as client
-
-Install and compress all man pages
-
-Update the man database (mandb)
-
-To uninstall:
+After installation:
 
 bash
 Copy code
+client          # Run from anywhere
+man mystrlen    # Open manual page for library function
+Uninstall
+bash
+Copy code
 sudo make uninstall
-🚀 Usage
-Run the client program from anywhere:
+📁 Repository Layout
+makefile
+Copy code
+BSDSF22M035--OS--A01/
+├── src/             # C source files
+├── include/         # Header files
+├── build/           # Object files
+├── bin/             # Compiled executables
+├── lib/             # Static (.a) and dynamic (.so) libraries
+├── man/
+│   └── man3/        # Manual pages for library functions
+├── Makefile         # Build/clean/install instructions
+└── REPORT.md        # Detailed answers for all features
+🔗 Git Development Workflow
+Each phase was developed in a separate branch
+(multifile-build, static-build, dynamic-build, man-pages).
+
+Branches were merged into main after testing.
+
+Annotated tags mark every release:
+
+v0.1.1-multifile – Modular multi-file build
+
+v0.2.1-static – Static library and client
+
+v0.3.1-dynamic – Dynamic library and client
+
+v0.4.1-final – Installation and man pages
+
+A final GitHub Release contains binaries and source for submission.
+
+📦 Key Deliverables
+Release Tag	Highlights
+v0.1.1	First modular executable build
+v0.2.1	Static library (libmyutils.a) + client
+v0.3.1	Dynamic library (libmyutils.so) + client
+v0.4.1	Final system installation + man pages
+
+🧪 Testing Checklist
+After installation, test from any directory:
 
 bash
 Copy code
 client
-View the manual pages:
-
-bash
-Copy code
 man mystrlen
 man wordCount
 man mygrep
-To run the dynamic build directly from the repository (if not installed):
+For dynamic linking details:
 
 bash
 Copy code
-LD_LIBRARY_PATH=lib ./bin/client_dynamic
-🔑 Key Commands Used in Development
-Compilation and linking examples:
+ldd bin/client_dynamic   # Shows linkage to libmyutils.so
+💡 Learning Outcomes
+Through this assignment, I practiced:
 
-bash
-Copy code
-gcc -c src/myutils.c -o build/myutils.o
-gcc -c src/client.c -o build/client.o
-ar rcs lib/libmyutils.a build/myutils.o
-gcc src/client.c lib/libmyutils.a -o bin/client_static
-gcc -fPIC -c src/myutils.c -o build/myutils.o
-gcc -shared build/myutils.o -o lib/libmyutils.so
-gcc src/client.c -Llib -lmyutils -o bin/client_dynamic
-Git workflow:
+Modular C programming with Makefiles
 
-bash
-Copy code
-git checkout -b feature-branch
-git add .
-git commit -m "Feature commit message"
-git push origin feature-branch
-git tag -a v0.4.1-final -m "Final build"
-git push origin v0.4.1-final
-📁 Repository Structure
-bash
-Copy code
-BSDSF22M035--OS--A01/
-├── bin/        # Compiled executables
-├── build/      # Object files
-├── lib/        # Static (.a) and dynamic (.so) libraries
-├── man/man3/   # Manual pages (.3 files)
-├── src/        # Source code (.c and .h files)
-├── Makefile    # Build, install, and uninstall rules
-└── REPORT.md   # Detailed answers for all 5 features
-🏷️ Git Tags & Releases
-v0.1.1-multifile – Multi-file build
+Creating and linking static and shared libraries
 
-v0.2.1-static – Static library build
+Writing and installing man pages
 
-v0.3.1-dynamic – Dynamic library build
-
-v0.4.1-final – Final build with man pages and install target
-
-Each tag corresponds to a milestone in the development process.
-
-📜 Documentation
-Detailed explanations of each feature and build process are available in REPORT.md.
-This includes answers to all assignment questions and step-by-step instructions.
+Using Git branches, merges, tags, and releases to manage development
 
 👤 Author
 Aiman Asif
 BSDSF22M035 – Operating Systems
-Email:aimanasif1230@gmail.com
-
+📧 aimanasif1230@gmail.com
