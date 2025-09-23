@@ -1,0 +1,10 @@
+.TH MYGREP 3 "Sept 2025" "v0.4.1" "User Commands"
+.SH NAME
+mygrep \- search for lines matching a pattern in a file
+.SH SYNOPSIS
+int mygrep(FILE *fp, const char *search_str, char ***matches);
+.SH DESCRIPTION
+Searches the file pointed to by fp for lines containing search_str.
+Allocates and fills matches with pointers to matched lines. Returns the number of matches or -1 on error.
+.SH AUTHOR
+Aiman Asif <aimanasif1230@gmail.com>
