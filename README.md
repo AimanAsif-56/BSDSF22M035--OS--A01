@@ -126,6 +126,4 @@ This includes answers to all assignment questions and step-by-step instructions.
 Aiman Asif
 BSDSF22M035 – Operating Systems
 Email:aimanasif1230@gmail.com
-Aiman Asif
-BSDSF22M035 – Operating Systems
-Email: aaimanasif1230@gmail.com
+
